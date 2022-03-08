@@ -1,7 +1,5 @@
 const router = require("express").Router()
 
-const cors = require('cors')
-router.use(cors())
 router.use("/auth", require('./auth.routes'))
 router.use("/profile", require("./profile.routes"))
 router.use("/events", require("./events.routes"))
