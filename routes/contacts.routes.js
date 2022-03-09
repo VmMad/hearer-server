@@ -2,10 +2,10 @@ const User = require("../models/User.model")
 const router = require("express").Router()
 const { isAuthenticated } = require("../middlewares/jwt.middleware")
 
-router.get("/:username/contacts", (req, res) => {
-    const { username } = req.params
+router.get("/mycontacts", isAuthenticated, (req, res) => {
+    const { _id } = req.payload
     User
-        .findOne({ username })
+        .findOne({ _id })
         .populate("contacts")
         .then(resp => {
             const contacts = resp.contacts.map(e => {
@@ -17,12 +17,16 @@ router.get("/:username/contacts", (req, res) => {
         .catch(err => console.log(err))
 })
 
-router.post("/contacts/:id", isAuthenticated, (req, res) => {
-    const { username } = req.payload
+router.post("/contacts/:id/delete", isAuthenticated, (req, res) => {
+    const { _id } = req.payload
     const { id } = req.params
     User
-        .findOneAndUpdate({ username }, { $pull: { contacts: id } })
-        .then(resp => res.json(resp))
+        .findOneAndUpdate({ _id }, { $pull: { contacts: id } }, { new: true })
+        .populate("contacts")
+        .then(resp => resp)
+        .then(({ contacts }) => res.json(contacts))
+        .then(() => User.findOneAndUpdate({ _id: id }, { $pull: { contacts: _id } }, { new: true }))
+        .catch(err => console.log(err))
 })
 
 module.exports = router

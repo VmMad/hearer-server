@@ -35,7 +35,8 @@ const eventSchema = new Schema(
             required: true,
             default: "General",
 
-        }
+        },
+        image: String
     },
     {
         timestamps: true,

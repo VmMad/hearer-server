@@ -10,16 +10,19 @@ router.get("/test", isAuthenticated, (req, res) => {
         .then(resp => res.json(resp))
         .catch(err => console.log(err))
 })
+router.get("/user", isAuthenticated, (req, res) => {
+    const { _id } = req.payload
+    User
+        .findById(_id)
+        .then(resp => res.json(resp))
+        .catch(err => console.log(err))
+})
 
 router.get("/:id", (req, res) => {
     const { id } = req.params
     User
         .findById(id)
-        .select("-password")
-        .then(resp => {
-            console.log(resp)
-            res.json(resp)
-        })
+        .then(resp => res.json(resp))
         .catch(err => console.log(err))
 })
 
@@ -39,12 +42,13 @@ router.delete("/:id", (req, res) => {
         .catch(err => console.log(err))
 })
 
-router.put("/edit/:id/accepthelper", (req, res) => {
-    const { helperid } = req.body
-    const { id } = req.params
+router.put("/accepthelper", isAuthenticated, (req, res) => {
+    const { helper_id } = req.body
+    const { _id } = req.payload
     User
-        .findByIdAndUpdate(id, { $push: { contacts: helperid } }, { new: true })
-        .then(result => res.json(result))
+        .findByIdAndUpdate(_id, { $addToSet: { contacts: helper_id } }, { new: true })
+        .then(() => User.findByIdAndUpdate(helper_id, { $addToSet: { contacts: _id } }))
+        .then(() => res.json("Se ha añadido a tus contactos correctamente"))
         .catch(err => console.log(err))
 })
 

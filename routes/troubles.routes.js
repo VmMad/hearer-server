@@ -55,6 +55,15 @@ router.get("/myTrouble", isAuthenticated, (req, res) => {
         .catch(err => console.log(err))
 
 })
+router.put("/deleteFromHelperOffers", isAuthenticated, (req, res) => {
+    const { _id } = req.payload
+    const { idHelper } = req.body
+    Trouble
+        .updateMany({ owner: _id }, { $pull: { helpers: idHelper } }, { new: true })
+        .then(() => Trouble.find().populate('helpers'))
+        .then(resp => res.json(resp))
+        .catch(err => console.log(err))
+})
 
 router.put(`/:id`, (req, res) => {
     const { id } = req.params
@@ -64,7 +73,7 @@ router.put(`/:id`, (req, res) => {
         .catch(err => console.log(err))
 })
 
-router.delete(`/:id`, (req, res) => {
+router.delete(`/:id/`, (req, res) => {
     const { id } = req.params
     Trouble
         .findByIdAndDelete(id)
@@ -72,14 +81,16 @@ router.delete(`/:id`, (req, res) => {
         .catch(err => console.log(err))
 })
 
-router.put("/:id/offerhelp", (req, res) => {
+router.put("/:id/offerhelp", isAuthenticated, (req, res) => {
     const { id } = req.params
-    const { idHelper } = req.body
+    const { _id } = req.payload
     Trouble
-        .findByIdAndUpdate(id, { $push: { helpers: idHelper } })
-        .then(resp => console.log("esta es la respuesta -->", resp))
+        .findByIdAndUpdate(id, { $addToSet: { helpers: _id } })
+        .then(() => Trouble.find().populate('helpers'))
+        .then(resp => res.json(resp))
         .catch(err => console.log(err))
 })
+
 
 
 module.exports = router
