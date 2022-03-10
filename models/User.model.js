@@ -29,7 +29,7 @@ const userSchema = new Schema(
     },
     image: {
       type: String,
-      default: "https://res-console.cloudinary.com/dntpphebk/thumbnails/v1/image/upload/v1646844092/MjczNDM0MjU1XzEyNDMzNDk2MDYxNTM5MjJfODcyMTI1NTg4Mjk3NTg4NjE3NV9uLndlYnBfbG1ocjNh/preview"
+      default: "https://res.cloudinary.com/dntpphebk/image/upload/v1646728217/146-1468479_my-profile-icon-blank-profile-picture-circle-hd-removebg-preview_gkvvm1.png"
     },
     studies: String,
     specialties: String,

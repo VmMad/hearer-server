@@ -36,7 +36,10 @@ const eventSchema = new Schema(
             default: "General",
 
         },
-        image: String
+        image: {
+            type: String,
+            default: "https://res.cloudinary.com/dntpphebk/image/upload/v1646932350/bahia_xb2smn.jpg"
+        },
     },
     {
         timestamps: true,
