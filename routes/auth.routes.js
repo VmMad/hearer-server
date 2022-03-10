@@ -3,16 +3,16 @@ const bcrypt = require('bcryptjs')
 const User = require("../models/User.model")
 const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 const jwt = require('jsonwebtoken')
-const {formatError} =require("mongoose")
+const { formatError } = require("mongoose")
 const mongoose = require("mongoose")
 
 const router = express.Router()
 const saltRounds = 10
 
-router.get("/tester", (req,res)=>{
+router.get("/tester", (req, res) => {
     User
-    .find()
-    .then(resp=>res.json(resp))
+        .find()
+        .then(resp => res.json(resp))
 })
 
 router.post('/signup', (req, res, next) => {
@@ -53,14 +53,14 @@ router.post('/login', (req, res, next) => {
     User
         .findOne({ email })
         .then(foundUser => {
-            if (!foundUser){
+            if (!foundUser) {
                 return res.status(401).json({ message: "This user does not exists!" })
             }
 
             if (bcrypt.compareSync(password, foundUser.password)) {
-                const { _id, email, username , role} = foundUser
+                const { _id, email, username, role, image } = foundUser
 
-                const payload = { _id, email, username, role }
+                const payload = { _id, email, username, role, image }
 
                 const authToken = jwt.sign(
                     payload,
@@ -77,7 +77,7 @@ router.post('/login', (req, res, next) => {
             if (error instanceof mongoose.Error.ValidationError) {
                 res.render('validated-form', { errorMessage: formatError(error) })
             } else {
-              next(error)
+                next(error)
             }
         })
 })
