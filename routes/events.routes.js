@@ -50,7 +50,7 @@ router.get("/category/:category", isAuthenticated, (req, res) => {
     const { category } = req.params
     const { page } = req.query
     Events
-        .find(category !== "all" ? { category: new RegExp('^' + category, 'i') } : null)
+        .find(category !== "categorias" ? { category: new RegExp('^' + category, 'i') } : null)
         .limit(10)
         .skip(page ? page * 10 : 0)
         .then(resp => res.json(resp))
