@@ -9,7 +9,7 @@ router.get("/mycontacts", isAuthenticated, (req, res) => {
         .populate("contacts")
         .then(resp => {
             const contacts = resp.contacts.map(e => {
-                return { username: e.username, email: e.email, _id: e._id }
+                return { username: e.username, email: e.email, _id: e._id, role: e.role }
             })
             return contacts
         })

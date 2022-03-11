@@ -29,8 +29,9 @@ router.get("/autosearch", isAuthenticated, (req, res) => {
         let value = Object.values(elm)
         return { [key]: new RegExp('^' + value, 'i') }
     })
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", realQuery)
     Trouble
-        .find(realQuery.length !== 0 ? { $and: realQuery } : null)
+        .find(realQuery.length !== 0 ? { $and: realQuery } : realQuery[0])
         .populate("helpers")
         .then(resp => res.json(resp))
         .catch(err => console.log(err))
