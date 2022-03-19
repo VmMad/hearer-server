@@ -32,7 +32,7 @@ const userSchema = new Schema(
       default: "https://res.cloudinary.com/dntpphebk/image/upload/v1646728217/146-1468479_my-profile-icon-blank-profile-picture-circle-hd-removebg-preview_gkvvm1.png"
     },
     studies: String,
-    specialties: String,
+    specialities: { type: String, default: "Sin especialidades definidas" },
     age: Number,
     contacts: [{
       type: Schema.Types.ObjectId,

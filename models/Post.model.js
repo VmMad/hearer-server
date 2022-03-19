@@ -22,7 +22,11 @@ const postSchema = new Schema(
             required: true,
             default: "General"
         },
-        image: String
+        image: String,
+        anonymous: {
+            type: Boolean,
+            default: false
+        },
     },
     {
         timestamps: true,
